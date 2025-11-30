@@ -1,16 +1,152 @@
 ---
+import '../styles/global.css';
+import { getEntry } from 'astro:content';
 
+// 1. Fetch the data from the CMS file
+const homepage = await getEntry('pages', 'homepage');
+
+// Debugging log (check your terminal to see this)
+console.log("MY DATA:", homepage ? JSON.stringify(homepage.data, null, 2) : "Homepage is undefined");
+
+// 2. Fallback (Prevents crash if you haven't clicked 'Save' in CMS yet)
+if (!homepage) {
+  throw new Error("Could not find homepage data! Go to /keystatic and create it.");
+}
+
+const data = homepage.data;
+
+// 3. Map CMS data to our cleaner variable structure
+const siteData = {
+  hero: {
+    headline: data.heroHeadline,
+    subhead: data.heroSubhead,
+    buttonText: data.heroButton,
+  },
+  about: {
+    title: data.aboutTitle,
+    text: data.aboutText,
+    // Use the uploaded image, or fall back to the interior.png if empty
+    image: data.aboutImage || '/images/interior.png',
+  },
+  menu: {
+    title: data.menuTitle,
+    items: data.menuItems,
+  },
+  reservation: {
+    title: data.reservationTitle,
+    note: data.reservationNote,
+    link: "#"
+  },
+  contact: {
+    address: data.contactAddress,
+    email: data.contactEmail,
+    phone: data.contactPhone,
+  }
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Minimal Bistro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  </head>
+  
+  <body class="bg-stone-50 text-stone-900 font-sans antialiased">
+
+    <nav class="fixed top-0 w-full bg-stone-50/90 backdrop-blur-md z-50 py-4 border-b border-stone-200">
+      <div class="max-w-4xl mx-auto px-6 flex justify-between items-center">
+        <a href="#" class="font-serif text-xl font-bold tracking-tighter">BISTRO.</a>
+        <ul class="flex space-x-6 text-sm uppercase tracking-widest text-stone-500">
+          <li><a href="#about" class="hover:text-stone-900 transition">About</a></li>
+          <li><a href="#menu" class="hover:text-stone-900 transition">Menu</a></li>
+          <li><a href="#reservation" class="hover:text-stone-900 transition">Book</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20 bg-[url('/images/background.png')] bg-cover bg-center bg-no-repeat text-white">
+      
+      <div class="absolute inset-0 bg-black/40 z-0"></div>
+
+      <div class="relative z-10 flex flex-col items-center">
+        <h1 class="font-serif text-5xl md:text-7xl mb-6 leading-tight max-w-3xl drop-shadow-lg">
+          {siteData.hero.headline}
+        </h1>
+        <p class="text-stone-100 text-lg md:text-xl mb-10 max-w-lg font-light drop-shadow-md">
+          {siteData.hero.subhead}
+        </p>
+        <a href="#reservation" class="px-8 py-3 bg-white text-stone-900 font-bold rounded-full hover:bg-stone-200 transition duration-300 shadow-lg">
+          {siteData.hero.buttonText}
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="py-24 px-6 bg-stone-100">
+      <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <img 
+          src={siteData.about.image} 
+          alt="Restaurant interior" 
+          class="rounded-lg shadow-xl w-full h-[400px] object-cover"
+        />
+        <div>
+          <h2 class="font-serif text-3xl mb-6">{siteData.about.title}</h2>
+          <p class="text-stone-600 leading-relaxed">
+            {siteData.about.text}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="py-24 px-6">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="font-serif text-3xl mb-12 text-center">{siteData.menu.title}</h2>
+        <div class="grid gap-8">
+          {siteData.menu.items.map((item) => (
+            <div class="flex justify-between items-baseline border-b border-stone-200 pb-4">
+              <div>
+                <h3 class="font-serif text-xl">{item.name}</h3>
+                <p class="text-stone-500 text-sm mt-1">{item.desc}</p>
+              </div>
+              <span class="font-mono text-lg ml-4">{item.price}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="reservation" class="py-24 px-6 bg-stone-900 text-stone-50 text-center">
+      <div class="max-w-xl mx-auto">
+        <h2 class="font-serif text-4xl mb-6">{siteData.reservation.title}</h2>
+        <p class="text-stone-400 mb-8">{siteData.reservation.note}</p>
+        <button class="px-10 py-4 bg-white text-stone-900 font-bold tracking-widest hover:bg-stone-200 transition">
+          RESERVE NOW
+        </button>
+      </div>
+    </section>
+
+    <footer class="py-12 px-6 border-t border-stone-200 bg-stone-50 text-center">
+      <div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 text-sm text-stone-500">
+        <div>
+          <h4 class="font-bold text-stone-900 mb-2 uppercase tracking-wider">Visit</h4>
+          <p>{siteData.contact.address}</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-stone-900 mb-2 uppercase tracking-wider">Contact</h4>
+          <p>{siteData.contact.email}</p>
+          <p>{siteData.contact.phone}</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-stone-900 mb-2 uppercase tracking-wider">Social</h4>
+          <a href="#" class="hover:text-stone-900">Instagram</a> &bull;
+          <a href="#" class="hover:text-stone-900">Facebook</a>
+        </div>
+      </div>
+      <p class="mt-12 text-xs text-stone-300">© 2024 Minimal Bistro. Built with Astro.</p>
+    </footer>
+
+  </body>
 </html>

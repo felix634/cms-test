@@ -1,0 +1,22 @@
+heroHeadline: BONGORNO ROMEO
+heroSubhead: Italian restaurant
+heroButton: wanna eat
+aboutTitle: About US
+aboutText: Best italian food in CEE
+aboutImage: /images/aboutImage.jpg
+menuTitle: Menu
+menuItems:
+  - name: Soup
+    desc: Nice soup
+    price: '10'
+  - name: Main course
+    desc: Wienerschnitzel mit Pommes
+    price: '12'
+  - name: Dessert
+    desc: GELATO MAMMA MIA
+    price: '8'
+reservationTitle: Book a table (please)
+reservationNote: Again, please
+contactAddress: CEE
+contactEmail: italyrestaurant@gmail.com
+contactPhone: '123456789'
