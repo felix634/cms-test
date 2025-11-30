@@ -1,14 +1,18 @@
-// keystatic.config.ts
 import { config, fields, singleton } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local', // We use 'local' for now. We change this to 'github' later!
+    // 👈 THE FIX: Automatically switch based on where the code is running
+    kind: import.meta.env.PROD ? 'cloud' : 'local',
+  },
+  // 👈 REQUIRED: This connects to your Keystatic Cloud project
+  cloud: {
+    project: 'prometheus-digital/cms-test',
   },
   singletons: {
     homepage: singleton({
       label: 'Homepage Content',
-      path: 'src/content/pages/homepage', // 👈 Where the data file will be saved
+      path: 'src/content/pages/homepage', 
       schema: {
         // 1. HERO SECTION
         heroHeadline: fields.text({ label: 'Hero Headline' }),
@@ -20,7 +24,7 @@ export default config({
         aboutText: fields.text({ label: 'About Text', multiline: true }),
         aboutImage: fields.image({
           label: 'About Image',
-          directory: 'public/images', // Saves to your public folder
+          directory: 'public/images', 
           publicPath: '/images/',
         }),
 
