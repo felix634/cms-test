@@ -1,22 +1,24 @@
-heroHeadline: BONGORNO ROMEO
-heroSubhead: Italian restaurant
-heroButton: wanna eat
-aboutTitle: About US
-aboutText: Best italian food in CEE
+heroHeadline: MAMMA MIA
+heroSubhead: Your favorite restaurant has opened!
+heroButton: >-
+  Welcome to the Los Pollos Hermanos. My name is Gustavo, but you can call meg
+  Gus.
+aboutTitle: About Gus.
+aboutText: I like drug trafficking and stuff.
 aboutImage: /images/aboutImage.jpg
-menuTitle: Menu
+menuTitle: Our specialities only for YOU
 menuItems:
-  - name: Soup
-    desc: Nice soup
+  - name: Your favourite starter
+    desc: Soup
     price: '10'
   - name: Main course
-    desc: Wienerschnitzel mit Pommes
+    desc: soup again
     price: '12'
   - name: Dessert
-    desc: GELATO MAMMA MIA
+    desc: whats better for dessert than another soup?
     price: '8'
-reservationTitle: Book a table (please)
-reservationNote: Again, please
-contactAddress: CEE
-contactEmail: italyrestaurant@gmail.com
+reservationTitle: Get your table NOW
+reservationNote: Only for a limited time
+contactAddress: The beautiful Italy
+contactEmail: halo@gmail.com
 contactPhone: '123456789'
